@@ -7,10 +7,16 @@ name = "pypi"
 
 [packages]
 
+lxml = "*"
+aiohttp = "*"
+"bs4" = "*"
 
 
 [dev-packages]
 
+pytest = "*"
+sphinx = "*"
+sphinxcontrib-asyncio = "*"
 
 
 [requires]
