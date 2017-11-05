@@ -1,25 +1,14 @@
 fmi.py documentation
-==================================
+====================
+
+.. include:: ../README.rst
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
+   getting_started
+   api
 
-Getting started
----------------
-
-::
-
-    import fmi
-
-    client = fmi.Client("api-key-here"):
-    res = await client.latest_observations("helsinki")
-    print(res)
-
-
-Api reference
------------------------------
-
-.. autoclass:: fmi.Client
-    :members:

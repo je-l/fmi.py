@@ -17,6 +17,7 @@ aiohttp = "*"
 pytest = "*"
 sphinx = "*"
 sphinxcontrib-asyncio = "*"
+sphinx-rtd-theme = "*"
 
 
 [requires]
