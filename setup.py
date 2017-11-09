@@ -1,6 +1,7 @@
 from distutils.core import setup
 
-required = [
+
+dependencies = [
     "lxml",
     "aiohttp",
     "python-dateutil",
@@ -12,6 +13,9 @@ setup(name="fmi.py",
       author="je-l",
       url="https://www.github.com/je-l/fmi.py",
       packages=["fmi"],
-      install_requires=required,
-      tests_require=["pytest"],
-     )
+      install_requires=dependencies,
+      extras_require={
+          "tests": [
+              "pytest"],
+          "docs": [
+              "sphinxcontrib-asyncio"]})
