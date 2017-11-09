@@ -18,14 +18,11 @@ def example_gml():
                           "salo_latest_observations.gml")
 
     with open(directory, "rb") as f:
-        salo_fixture = f.read()
-
-    parsed = etree.fromstring(salo_fixture)
-
-    return parsed
+        return f.read()
 
 
 @pytest.fixture(scope="session")
 def example_node(example_gml):
+    parsed = etree.fromstring(example_gml)
     xpath = ".//BsWfs:BsWfsElement"
-    return example_gml.find(xpath, namespaces=example_gml.nsmap)
+    return parsed.find(xpath, namespaces=parsed.nsmap)

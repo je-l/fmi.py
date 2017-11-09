@@ -1,9 +1,34 @@
+observation_schema = {
+    "coordinates": dict,
+    "t2m": float,
+    "p_sea": float,
+    "rh": float,
+    "r_1h": float,
+    "ri_10min": float,
+    "snow_aws": float,
+    "td": float,
+    "timestamp": int,
+    "vis": float,
+    "wd_10min": float,
+    "wg_10min": float,
+    "ws_10min": float
+}
+
+
 class Observation:
     """Represents single past observation from weather station
 
-    :cvar coordinates: location for the weather station in WGS84 lat/lon format
-    :cvar p_sea: pressure at sea level
-    ...
+    :ivar coordinates: dictionary of lat/lon WGS84 coordinates for the weather
+        station
+    :ivar p_sea: pressure at sea level
+    :ivar rh: relative humidity percentage
+    :ivar snow_aws: snowfall
+    :ivar t2m: temperature in celsius at two meters from ground surface
+    :ivar timestamp: observation timestamp in unix seconds
+    :ivar vis: visibility in meters
+    :ivar wd_10min: wind direction in degrees for 10 minutes
+    :ivar wg_10min: wind gust for 10 minutes
+    :ivar ws_10min: wind speed for 10 minutes
     """
     def __init__(self, **kwargs):
         self.coordinates = kwargs.get("coordinates")
@@ -20,3 +45,8 @@ class Observation:
         self.wg_10min = kwargs.get("wg_10min")
         self.ws_10min = kwargs.get("ws_10min")
 
+    def __str__(self):
+        return str(self.__dict__)
+
+    def __repr__(self):
+        return str(self)

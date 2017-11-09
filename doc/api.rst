@@ -9,7 +9,7 @@ Client
 
 
 Observation
-------
+-----------
 
 .. autoclass:: fmi.Observation
     :members:
