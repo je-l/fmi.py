@@ -1,8 +1,9 @@
-.. image:: https://api.travis-ci.org/je-l/fmi.py.svg?branch=master
-  :target: https://travis-ci.org/je-l/fmi.py
+.. image:: https://img.shields.io/pypi/pyversions/fmi.py.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/fmi.py
 
-.. image:: https://img.shields.io/pypi/pyversions/fmipy.svg
-  :target: https://pypi.python.org/pypi/fmi.py
+.. image:: https://img.shields.io/travis/je-l/fmi.py.svg?style=flat-square
+    :target: https://travis-ci.org/je-l/fmi.py
+
 
 Fmi.py is a library providing simple interface for interacting with FMI weather
 and forecast API.
@@ -17,9 +18,9 @@ Installation
 
 .. code:: bash
 
-  pip install fmi.py
+    pip install fmi.py
 
 Documentation
 -------------
 
-https://fmipy.readthedocs.io
+https://fmipy.readthedocs.io/

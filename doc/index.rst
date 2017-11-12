@@ -2,14 +2,14 @@ fmi.py documentation
 ====================
 
 .. include:: ../README.rst
-  :end-before: Documentation
+    :end-before: Documentation
 
 Contents
 --------
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   getting_started
-   api
+    getting_started
+    api
 
