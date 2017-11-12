@@ -1,10 +1,9 @@
-from lxml import etree
 import itertools
 from functools import reduce
 from dateutil.parser import parse as timeparse
-
+from lxml import etree
 from fmi import Observation
-from fmi.model import observation_schema
+from fmi.model import OBSERVATION_SCHEMA
 
 
 def _compare_element_id(element):
@@ -17,8 +16,12 @@ def parse_latest_observations(gml):
     """Parse latest observations object into python dict.
     :param gml: lxml Element
     :return: list of latest observations
+    :raises ValueError: error raised if fmi api returns error
     """
     parsed_gml = etree.fromstring(gml)
+    if parsed_gml.tag.endswith("ExceptionReport"):
+        error_reason = _gml_find(parsed_gml, "ExceptionText")
+        raise ValueError(error_reason)
 
     elements = parsed_gml.findall(".//BsWfs:BsWfsElement",
                                   namespaces=parsed_gml.nsmap)
@@ -31,14 +34,13 @@ def parse_latest_observations(gml):
 
 def _dict_to_observation(obs):
     # Replace "NaN" with None
-    for k, v in obs.items():
-        if v == "NaN":
-            obs[k] = None
+    for key, val in obs.items():
+        if val == "NaN":
+            obs[key] = None
         else:
-            obs[k] = observation_schema[k](v)
+            obs[key] = OBSERVATION_SCHEMA[key](val)
 
     return Observation(**obs)
-
 
 
 def _merge(acc, cur):
@@ -59,7 +61,7 @@ def _gml_find(gml, search_term):
 
 def _parse_feature(gml):
     coords = _gml_find(gml, "gml:pos")
-    lon, lat = coords.strip().split(" ")
+    lat, lon = coords.strip().split(" ")
 
     prop = _gml_find(gml, "BsWfs:ParameterName")
     value = _gml_find(gml, "BsWfs:ParameterValue")
@@ -73,4 +75,3 @@ def _parse_feature(gml):
         "timestamp": unix_timestamp,
         "coordinates": {"lat": float(lat), "lon": float(lon)},
     }
-

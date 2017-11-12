@@ -13,7 +13,6 @@ FILE_DIR = path.dirname(path.realpath(__file__))
 def example_gml():
     """Create example gml tree for test modules"""
     directory = path.join(FILE_DIR,
-                          "test",
                           "fixture",
                           "salo_latest_observations.gml")
 

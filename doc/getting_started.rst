@@ -6,12 +6,16 @@ https://ilmatieteenlaitos.fi/rekisteroityminen-avoimen-datan-kayttajaksi
 
 ::
 
+    import asyncio
     import fmi
 
-    client = fmi.Client("api-key-here")
-    res = await client.latest_observations("helsinki")
-    print(res)
 
-    turku_weather = await client.weather_now("turku")
-    print(f"temperature at Turku: {turku_weather.t2m} c")
+    async def run():
+        client = fmi.Client("fmi-api-key")
+        weather = await client.weather_now("turku")
 
+        print(f"it's {weather.t2m}°C warm and wind is blowing "
+              f"{weather.ws_10min} m/s")
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run())

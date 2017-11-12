@@ -20,3 +20,8 @@ def test_cannot_use_empty_api_key():
         Client("")
 
 
+@pytest.mark.asyncio
+async def test_cannot_use_five_as_interval():
+    c = Client("abc")
+    with pytest.raises(ValueError):
+        await c.latest_observations("kuopio", timestep=5)

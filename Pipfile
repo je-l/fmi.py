@@ -18,6 +18,7 @@ pytest = "*"
 sphinx = "*"
 sphinxcontrib-asyncio = "*"
 sphinx-rtd-theme = "*"
+pytest-asyncio = "*"
 
 
 [requires]

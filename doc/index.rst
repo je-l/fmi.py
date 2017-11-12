@@ -2,6 +2,7 @@ fmi.py documentation
 ====================
 
 .. include:: ../README.rst
+  :end-before: Documentation
 
 Contents
 --------
