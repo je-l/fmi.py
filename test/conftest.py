@@ -6,22 +6,37 @@ import pytest
 from os import path
 from lxml import etree
 
-FILE_DIR = path.dirname(path.realpath(__file__))
+FIXTURE_DIR = path.join(path.dirname(path.realpath(__file__)), "fixture")
+
+
+def parse_first_node(gml):
+    parsed = etree.fromstring(gml)
+    xpath = ".//BsWfs:BsWfsElement"
+    return parsed.find(xpath, namespaces=parsed.nsmap)
 
 
 @pytest.fixture(scope="session")
-def example_gml():
-    """Create example gml tree for test modules"""
-    directory = path.join(FILE_DIR,
-                          "fixture",
-                          "salo_latest_observations.gml")
+def observation_gml():
+    """Create example gml byte array for test modules"""
+    observation_file = path.join(FIXTURE_DIR, "salo_latest_observations.gml")
 
-    with open(directory, "rb") as f:
+    with open(observation_file, "rb") as f:
         return f.read()
 
 
 @pytest.fixture(scope="session")
-def example_node(example_gml):
-    parsed = etree.fromstring(example_gml)
-    xpath = ".//BsWfs:BsWfsElement"
-    return parsed.find(xpath, namespaces=parsed.nsmap)
+def observation_node(observation_gml):
+    return parse_first_node(observation_gml)
+
+
+@pytest.fixture(scope="session")
+def forecast_gml():
+    forecast_file = path.join(FIXTURE_DIR, "salo_forecast.gml")
+
+    with open(forecast_file, "rb") as f:
+        return f.read()
+
+
+@pytest.fixture(scope="session")
+def forecast_node(forecast_gml):
+    return parse_first_node(forecast_gml)

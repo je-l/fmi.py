@@ -19,8 +19,3 @@ sphinx = "*"
 sphinxcontrib-asyncio = "*"
 sphinx-rtd-theme = "*"
 pytest-asyncio = "*"
-
-
-[requires]
-
-python_version = "3.6"

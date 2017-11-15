@@ -1,2 +1,2 @@
-from .model import Observation
+from .model import Observation, Forecast
 from .fmi import Client

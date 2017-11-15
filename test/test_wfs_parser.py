@@ -1,43 +1,44 @@
 from fmi.wfs_parse import (
     parse_latest_observations,
     _parse_feature,
-    _compare_element_id,
+    _extract_node_id,
     _dict_to_observation,
+    parse_forecast,
 )
 
 from datetime import datetime
 from pytest import approx
 
 
-def test_wfs_observation_parsing(example_gml):
-    parsed = parse_latest_observations(example_gml)
-    before_len = len(example_gml)
+def test_wfs_observation_parsing(observation_gml):
+    parsed = parse_latest_observations(observation_gml)
+    before_len = len(observation_gml)
     after_len = len(parsed)
     assert after_len < before_len
 
 
-def test_wfs_parse_coords(example_node):
-    parsed = _parse_feature(example_node)
+def test_wfs_parse_coords(observation_node):
+    parsed = _parse_feature(observation_node)
     coords = parsed["coordinates"]
 
     assert coords["lon"] > 0
     assert coords["lat"] < 100
 
 
-def test_wfs_parse_property(example_node):
-    parsed = _parse_feature(example_node)
+def test_wfs_parse_property(observation_node):
+    parsed = _parse_feature(observation_node)
     prop = parsed["property"]
 
     assert prop == "t2m"
 
 
-def test_compare_element_id(example_node):
-    res = _compare_element_id(example_node)
+def test_compare_element_id(observation_node):
+    res = _extract_node_id(observation_node)
     assert len(res) == 2
 
 
-def test_time_parsed_exact(example_node):
-    parsed_node = _parse_feature(example_node)
+def test_time_parsed_exact(observation_node):
+    parsed_node = _parse_feature(observation_node)
     result_timestamp = datetime.utcfromtimestamp(parsed_node["timestamp"])
     assert result_timestamp.hour == 3
     assert result_timestamp.minute == 20
@@ -53,3 +54,21 @@ def test_should_not_have_nan_in_observation():
     example = {"t2m": "NaN"}
     parsed = _dict_to_observation(example)
     assert "NaN" not in parsed.__dict__.values()
+
+
+def test_parse_forecast_not_empty(forecast_gml):
+    forecasts = parse_forecast(forecast_gml)
+
+    assert len(forecasts) > 0
+
+
+def test_parse_forecast_has_temperature(forecast_gml):
+    forecast = parse_forecast(forecast_gml)[0]
+
+    assert forecast.temperature == 0.08
+
+
+def test_parse_forecast_has_text_representation(forecast_gml):
+    forecast = parse_forecast(forecast_gml)[0]
+
+    assert forecast.weather_text == "pilvistä"

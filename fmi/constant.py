@@ -1,5 +1,5 @@
 # taken from https://github.com/lepinkainen/pyfibot/
-WAWA_CODES = {
+OBSERVATION_CODES = {
     10: "utua",
 
     20: "sumua",
@@ -54,4 +54,34 @@ WAWA_CODES = {
     85: "kohtalaisia lumikuuroja",
     86: "kovia lumikuuroja",
     87: "raekuuroja",
+}
+
+FORECAST_CODES = {
+    1: "selkeää",
+    2: "puolipilvistä",
+    3: "pilvistä",
+    21: "heikkoja sadekuuroja",
+    22: "sadekuuroja",
+    23: "voimakkaita sadekuuroja",
+    31: "heikkoa vesisadetta",
+    32: "vesisadetta",
+    33: "voimakasta vesisadetta",
+    41: "heikkoja lumikuuroja",
+    42: "lumikuuroja",
+    43: "voimakkaita lumikuuroja",
+    51: "heikkoa lumisadetta",
+    52: "lumisadetta",
+    53: "voimakasta lumisadetta",
+    61: "ukkoskuuroja",
+    62: "voimakkaita ukkoskuuroja",
+    63: "ukkosta",
+    64: "voimakasta ukkosta",
+    71: "heikkoja räntäkuuroja",
+    72: "räntäkuuroja",
+    73: "voimakkaita räntäkuuroja",
+    81: "heikkoa räntäsadetta",
+    82: "räntäsadetta",
+    83: "voimakasta räntäsadetta",
+    91: "utua",
+    92: "sumua"
 }

@@ -2,19 +2,13 @@ import itertools
 from functools import reduce
 from dateutil.parser import parse as timeparse
 from lxml import etree
-from fmi import Observation
+from fmi import Observation, Forecast
 from fmi.model import OBSERVATION_SCHEMA
 
 
-def _compare_element_id(element):
-    id_text = element.values()[0]
-    element_id = id_text.split(".", 1)[1]
-    return element_id.split(".", 2)[:2]
-
-
 def parse_latest_observations(gml):
-    """Parse latest observations object into python dict.
-    :param gml: lxml Element
+    """Parse latest observations gml into observation objects.
+    :param gml: raw gml text
     :return: list of latest observations
     :raises ValueError: error raised if fmi api returns error
     """
@@ -26,10 +20,31 @@ def parse_latest_observations(gml):
     elements = parsed_gml.findall(".//BsWfs:BsWfsElement",
                                   namespaces=parsed_gml.nsmap)
 
-    groups = itertools.groupby(elements, _compare_element_id)
+    groups = itertools.groupby(elements, _extract_node_id)
 
     merged = [reduce(_merge, e, {}) for _, e in groups]
     return [_dict_to_observation(i) for i in merged]
+
+
+def parse_forecast(gml):
+    """Parse forecast API response into list of forecast objects.
+    :param gml: raw gml
+    :return: list of forecast objects
+    """
+    parsed_gml = etree.fromstring(gml)
+    elements = parsed_gml.findall(".//BsWfs:BsWfsElement",
+                                  namespaces=parsed_gml.nsmap)
+
+    groups = itertools.groupby(elements, _extract_node_id)
+
+    merged = [reduce(_merge, e, {}) for _, e in groups]
+    return [Forecast(**i) for i in merged]
+
+
+def _extract_node_id(element):
+    id_text = element.values()[0]
+    element_id = id_text.split(".", 1)[1]
+    return element_id.split(".", 2)[:2]
 
 
 def _dict_to_observation(obs):
@@ -44,6 +59,7 @@ def _dict_to_observation(obs):
 
 
 def _merge(acc, cur):
+    """Reducer function for aggregating feature properties into one dict"""
     parsed = _parse_feature(cur)
     acc["timestamp"] = parsed["timestamp"]
     acc["coordinates"] = parsed["coordinates"]
