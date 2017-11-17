@@ -29,10 +29,10 @@ class Observation:
 
     :ivar coordinates: dictionary of lat/lon WGS84 coordinates for the weather
         station
-    :ivar p_sea: pressure at sea level
-    :ivar r_1h: rain (1h average)
+    :ivar pressure: pressure at sea level
+    :ivar precipitation_1h: rain (1h average)
     :ivar rh: relative humidity percentage
-    :ivar snow_aws: snowfall
+    :ivar snow: snowfall
     :ivar t2m: temperature in celsius at two meters from ground surface
     :ivar td: dew point
     :ivar timestamp: observation timestamp in unix seconds
@@ -40,25 +40,25 @@ class Observation:
     :ivar wd_10min: wind direction in degrees for 10 minutes
     :ivar wg_10min: wind gust for 10 minutes
     :ivar ws_10min: wind speed for 10 minutes
-    :ivar wawa: description for the observation (only finnish)
+    :ivar weather_text: description for the observation (only finnish)
     """
     def __init__(self, **kwargs):
         self.coordinates = kwargs.get("coordinates")
-        self.p_sea = kwargs.get("p_sea")
-        self.r_1h = kwargs.get("r_1h")
-        self.rh = kwargs.get("rh")
-        self.snow_aw = kwargs.get("snow_aw")
-        self.t2m = kwargs.get("t2m")
-        self.td = kwargs.get("td")
+        self.pressure = kwargs.get("p_sea")
+        self.precipitation_1h = kwargs.get("r_1h")
+        self.humidity = kwargs.get("rh")
+        self.snow = kwargs.get("snow_aws")
+        self.temperature = kwargs.get("t2m")
+        self.dewpoint = kwargs.get("td")
         self.timestamp = kwargs.get("timestamp")
-        self.vis = kwargs.get("vis")
-        self.wd_10min = kwargs.get("wd_10min")
-        self.wg_10min = kwargs.get("wg_10min")
-        self.ws_10min = kwargs.get("ws_10min")
+        self.visibility = kwargs.get("vis")
+        self.wind_direction = kwargs.get("wd_10min")
+        self.wind_gust = kwargs.get("wg_10min")
+        self.wind_speed = kwargs.get("ws_10min")
         self._wawa = kwargs.get("wawa")
 
     @property
-    def wawa(self):
+    def weather_text(self):
         return OBSERVATION_CODES.get(self._wawa)
 
     def __str__(self):

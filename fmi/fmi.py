@@ -66,6 +66,10 @@ class Client:
 
         return parse_latest_observations(unparsed_gml)
 
+    async def forecast(self, place, **aiohttp_kwargs):
+        """Fetch forecast """
+        ...
+
     async def weather_now(self, place, **aiohttp_kwargs):
         """Fetch current weather for a specific place.
 

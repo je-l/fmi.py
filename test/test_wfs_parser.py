@@ -47,7 +47,7 @@ def test_time_parsed_exact(observation_node):
 def test_create_observation():
     example = {"t2m": 14.5}
     parsed = _dict_to_observation(example)
-    assert parsed.t2m == approx(14.5)
+    assert parsed.temperature == approx(14.5)
 
 
 def test_should_not_have_nan_in_observation():
