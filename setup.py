@@ -1,6 +1,14 @@
 from distutils.core import setup
 import os
-import fmi
+
+from os import path
+
+FILE_PATH = path.dirname(path.realpath(__file__))
+
+info = {}
+# package version
+with open(path.join(FILE_PATH, "fmi", "__version__.py")) as f:
+    exec(f.read(), info)
 
 
 dependencies = [
@@ -10,7 +18,7 @@ dependencies = [
 ]
 
 setup(name="fmi.py",
-      version=fmi.__version__,
+      version=info["__version__"],
       description="Fmi api wrapper",
       long_description="http://fmipy.readthedocs.io/en/latest/",
       url="https://www.github.com/je-l/fmi.py",

@@ -45,7 +45,7 @@ def _parse_exception(gml):
     error_code = exception_element.get("exceptionCode")
 
     text = _gml_find(gml, "ExceptionText")
-    return f'[{error_code}] {text}'
+    return "[{}] {}".format(error_code, text)
 
 
 def _extract_node_id(element):
