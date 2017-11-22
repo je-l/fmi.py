@@ -40,3 +40,9 @@ def forecast_gml():
 @pytest.fixture(scope="session")
 def forecast_node(forecast_gml):
     return parse_first_node(forecast_gml)
+
+
+@pytest.fixture(scope="session")
+def api_exception():
+    with open(path.join(FIXTURE_DIR, "exception.gml"), "rb") as ex_file:
+        return etree.fromstring(ex_file.read())

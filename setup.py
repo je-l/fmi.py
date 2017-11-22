@@ -1,15 +1,16 @@
 from distutils.core import setup
 import os
+import fmi
 
 
 dependencies = [
-    "lxml",
-    "aiohttp",
-    "python-dateutil",
+    "lxml>=4.1.1,<5.0.0",
+    "aiohttp>=2.3.3,<3.0.0",
+    "python-dateutil>=2.6.1,<3.0.0",
 ]
 
 setup(name="fmi.py",
-      version="0.2.0",
+      version=fmi.__version__,
       description="Fmi api wrapper",
       long_description="http://fmipy.readthedocs.io/en/latest/",
       url="https://www.github.com/je-l/fmi.py",
@@ -23,6 +24,6 @@ setup(name="fmi.py",
                    "Framework :: AsyncIO"],
       extras_require={
           "tests": [
-              "pytest", "pytest-asyncio"],
+              "pytest>=3.2.5,<4.0.0", "pytest-asyncio==0.8.0"],
           "docs": [
-              "sphinxcontrib-asyncio"]})
+              "sphinxcontrib-asyncio==0.2.0", "sphinx-rtd-theme==0.2.4"]})

@@ -12,10 +12,10 @@ https://ilmatieteenlaitos.fi/rekisteroityminen-avoimen-datan-kayttajaksi
 
     async def run():
         client = fmi.Client("fmi-api-key")
-        weather = await client.weather_now("turku")
+        observation = await client.weather_now("turku")
 
-        print(f"it's {weather.t2m}°C warm and wind is blowing "
-              f"{weather.ws_10min} m/s")
+        print(f"it's {observation.temperature}°C warm and wind is blowing "
+              f"{observation.wind_speed} m/s")
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run())

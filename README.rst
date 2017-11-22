@@ -10,7 +10,7 @@ and forecast API.
 
 Some differences to other similar projects:
 
-* Asynchronous
+* Asyncio
 * No scraping
 
 Installation

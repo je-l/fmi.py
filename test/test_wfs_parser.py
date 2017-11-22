@@ -3,6 +3,7 @@ from fmi.wfs_parse import (
     _parse_feature,
     _extract_node_id,
     _dict_to_observation,
+    _parse_exception,
     parse_forecast,
 )
 
@@ -65,10 +66,17 @@ def test_parse_forecast_not_empty(forecast_gml):
 def test_parse_forecast_has_temperature(forecast_gml):
     forecast = parse_forecast(forecast_gml)[0]
 
-    assert forecast.temperature == 0.08
+    assert forecast.temperature == approx(0.08)
 
 
 def test_parse_forecast_has_text_representation(forecast_gml):
     forecast = parse_forecast(forecast_gml)[0]
 
     assert forecast.weather_text == "pilvistä"
+
+
+def test_parse_exception(api_exception):
+    res = _parse_exception(api_exception)
+
+    assert "ParsingFailed" in res
+    assert "language" in res

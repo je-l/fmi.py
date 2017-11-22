@@ -4,7 +4,7 @@
 from urllib.parse import urlencode
 from datetime import datetime, timedelta
 from fmi import util
-from fmi.wfs_parse import parse_latest_observations
+from fmi.wfs_parse import parse_latest_observations, parse_forecast
 from fmi.model import OBSERVATION_PARAMS
 
 WFS_URL = "http://data.fmi.fi/fmi-apikey/{}/wfs?"
@@ -66,9 +66,33 @@ class Client:
 
         return parse_latest_observations(unparsed_gml)
 
-    async def forecast(self, place, **aiohttp_kwargs):
-        """Fetch forecast """
-        ...
+    async def forecast(self, place, timestep=60, count=5, **aiohttp_kwargs):
+        """Fetch forecast for single place.
+
+        :param place: search term for place. For example "Arabia, Helsinki"
+        :param timestep: interval between forecast points in minutes
+        :param count: # of forecast objects. Maximum is 5"""
+
+        if count > 5:
+            raise ValueError("forecast count must be <= 5")
+
+        params = {
+            "request": "getFeature",
+            "storedquery_id": "fmi::forecast::hirlam::surface::point::simple",
+            "place": place
+        }
+
+        if timestep != 60:
+            params["timestep"] = timestep
+
+        if count != 5:
+            # API count parameter affects the returned properties, not returned
+            # forecast amount, so we must multiply it with the # of properties
+            params["count"] = count * 24
+
+        url = self.base_url + urlencode(params)
+        unparsed_gml = await util.fetch(url, **aiohttp_kwargs)
+        return parse_forecast(unparsed_gml)
 
     async def weather_now(self, place, **aiohttp_kwargs):
         """Fetch current weather for a specific place.

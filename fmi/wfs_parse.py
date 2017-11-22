@@ -6,15 +6,10 @@ from fmi import Observation, Forecast
 from fmi.model import OBSERVATION_SCHEMA
 
 
-def parse_latest_observations(gml):
-    """Parse latest observations gml into observation objects.
-    :param gml: raw gml text
-    :return: list of latest observations
-    :raises ValueError: error raised if fmi api returns error
-    """
+def _extract_features(gml):
     parsed_gml = etree.fromstring(gml)
     if parsed_gml.tag.endswith("ExceptionReport"):
-        error_reason = _gml_find(parsed_gml, "ExceptionText")
+        error_reason = _parse_exception(parsed_gml)
         raise ValueError(error_reason)
 
     elements = parsed_gml.findall(".//BsWfs:BsWfsElement",
@@ -22,7 +17,17 @@ def parse_latest_observations(gml):
 
     groups = itertools.groupby(elements, _extract_node_id)
 
-    merged = [reduce(_merge, e, {}) for _, e in groups]
+    return [reduce(_merge, e, {}) for _, e in groups]
+
+
+def parse_latest_observations(gml):
+    """Parse latest observations gml into observation objects.
+    :param gml: raw gml text
+    :return: list of latest observations
+    :raises ValueError: error raised if fmi api returns error
+    """
+
+    merged = _extract_features(gml)
     return [_dict_to_observation(i) for i in merged]
 
 
@@ -31,14 +36,16 @@ def parse_forecast(gml):
     :param gml: raw gml
     :return: list of forecast objects
     """
-    parsed_gml = etree.fromstring(gml)
-    elements = parsed_gml.findall(".//BsWfs:BsWfsElement",
-                                  namespaces=parsed_gml.nsmap)
-
-    groups = itertools.groupby(elements, _extract_node_id)
-
-    merged = [reduce(_merge, e, {}) for _, e in groups]
+    merged = _extract_features(gml)
     return [Forecast(**i) for i in merged]
+
+
+def _parse_exception(gml):
+    exception_element = gml.find(".//Exception", namespaces=gml.nsmap)
+    error_code = exception_element.get("exceptionCode")
+
+    text = _gml_find(gml, "ExceptionText")
+    return f'[{error_code}] {text}'
 
 
 def _extract_node_id(element):
@@ -72,7 +79,8 @@ def _merge(acc, cur):
 
 
 def _gml_find(gml, search_term):
-    return gml.findtext(".//" + search_term, namespaces=gml.nsmap)
+    element_text = gml.findtext(".//" + search_term, namespaces=gml.nsmap)
+    return element_text.strip()
 
 
 def _parse_feature(gml):
