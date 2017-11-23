@@ -7,7 +7,7 @@ from fmi import util
 from fmi.wfs_parse import parse_latest_observations, parse_forecast
 from fmi.model import OBSERVATION_PARAMS
 
-WFS_URL = "http://data.fmi.fi/fmi-apikey/{}/wfs?"
+WFS_URL = "https://data.fmi.fi/wfs?"
 
 
 class Client:
@@ -20,7 +20,7 @@ class Client:
         if not api_key:
             raise ValueError("fmi api key cannot be empty")
 
-        self.base_url = WFS_URL.format(api_key)
+        self.fetch = util.authed_fetch(api_key)
 
     async def latest_observations(self, place, starttime=None, timestep=10,
                                   **aiohttp_kwargs):
@@ -61,8 +61,8 @@ class Client:
         if starttime:
             params["starttime"] = starttime
 
-        url = self.base_url + urlencode(params)
-        unparsed_gml = await util.fetch(url, **aiohttp_kwargs)
+        url = WFS_URL + urlencode(params)
+        unparsed_gml = await self.fetch(url, **aiohttp_kwargs)
 
         return parse_latest_observations(unparsed_gml)
 
@@ -90,8 +90,8 @@ class Client:
             # forecast amount, so we must multiply it with the # of properties
             params["count"] = count * 24
 
-        url = self.base_url + urlencode(params)
-        unparsed_gml = await util.fetch(url, **aiohttp_kwargs)
+        url = WFS_URL + urlencode(params)
+        unparsed_gml = await self.fetch(url, **aiohttp_kwargs)
         return parse_forecast(unparsed_gml)
 
     async def weather_now(self, place, **aiohttp_kwargs):
