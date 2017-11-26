@@ -4,7 +4,13 @@
 from urllib.parse import urlencode
 from datetime import datetime, timedelta
 from fmi import util
-from fmi.wfs_parse import parse_latest_observations, parse_forecast
+
+from fmi.wfs_parse import (
+    parse_latest_observations,
+    parse_forecast,
+    parse_sea_levels
+)
+
 from fmi.model import OBSERVATION_PARAMS
 
 WFS_URL = "https://data.fmi.fi/wfs?"
@@ -41,7 +47,7 @@ class Client:
 
         :raises ValueError: error raised if fmi api returns error, for example
             no results for given place parameter
-        :return: list of :class:`Observation` objects
+        :returns: list of :class:`Observation` objects
         """
         sensor_parameters = ",".join(OBSERVATION_PARAMS.keys())
 
@@ -71,8 +77,9 @@ class Client:
 
         :param place: search term for place. For example "Arabia, Helsinki"
         :param timestep: interval between forecast points in minutes
-        :param count: # of forecast objects. Maximum is 5"""
-
+        :param count: # of forecast objects. Maximum is 5
+        :returns: list of :class:`Forecast` objects
+        """
         if count > 5:
             raise ValueError("forecast count must be <= 5")
 
@@ -101,7 +108,7 @@ class Client:
         :param aiohttp_kwargs: see :func:`fmi.Client.latest_observations`
         :raises ValueError: error raised if fmi api returns error, for example
             no results for given place parameter
-        :return: :class:`Observation` object
+        :returns: :class:`Observation` object
         """
         half_hour_before = datetime.utcnow() - timedelta(minutes=30)
         iso_time = datetime.isoformat(half_hour_before.replace(microsecond=0))
@@ -109,3 +116,37 @@ class Client:
         observations = await self.latest_observations(place, starttime=iso_time,
                                                       **aiohttp_kwargs)
         return observations[-1]
+
+    async def sea_levels(self, fmisid, timestep=60, starttime=None,
+                         endtime=None, **aiohttp_kwargs):
+        """Fetch 12 hour sea level observations from a mareograph station.
+
+        :param fmisid: FMISID of a mareograph station as listed `here
+            <http://en.ilmatieteenlaitos.fi/observation-stations>`_
+        :param timestep: time interval between results in minutes. Must be
+            divisible by 30
+        :param starttime: UTC ISO 8601 time string. Maximum precision is one
+            second
+        :param enddtime: UTC ISO 8601 time string
+        :returns: list of unix timestamp - sea level -pairs. Units in
+            millimeters
+        """
+        if timestep % 30 != 0:
+            raise ValueError("timestep must be divisible by 30")
+
+        raw_params = {
+            "request": "getFeature",
+            "storedquery_id": "fmi::observations::mareograph::simple",
+            "fmisid": fmisid,
+            "timestep": timestep,
+            "starttime": starttime,
+            "endtime": endtime,
+        }
+
+        # remove null params
+        params = {k: v for k, v in raw_params.items() if v is not None}
+
+        url = WFS_URL + urlencode(params)
+
+        unparsed_gml = await self.fetch(url, **aiohttp_kwargs)
+        return parse_sea_levels(unparsed_gml)

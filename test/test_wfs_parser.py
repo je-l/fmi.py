@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fmi.wfs_parse import (
     parse_latest_observations,
     _parse_feature,
@@ -5,9 +7,10 @@ from fmi.wfs_parse import (
     _dict_to_observation,
     _parse_exception,
     parse_forecast,
+    parse_sea_levels,
+    _parse_watlev_property,
 )
 
-from datetime import datetime
 from pytest import approx
 
 
@@ -80,3 +83,34 @@ def test_parse_exception(api_exception):
 
     assert "ParsingFailed" in res
     assert "language" in res
+
+
+def test_parse_sea_level_valid_timestamp(sea_level_gml):
+    unix_timestamp, _ = parse_sea_levels(sea_level_gml)[0]
+    datetime.utcfromtimestamp(unix_timestamp)
+
+
+def test_parse_sea_level_value(sea_level_gml):
+    sea_levels = parse_sea_levels(sea_level_gml)
+    _, sea_level = sea_levels[0]
+
+    assert sea_level == 452
+
+
+def test_sea_level_trailing_null_is_removed(sea_level_gml):
+    sea_levels = parse_sea_levels(sea_level_gml)
+    _, sea_level = sea_levels[-1]
+
+    assert sea_level is not None
+
+
+def test_parse_null_watlev_property():
+    example = {"WATLEV": "NaN"}
+    result = _parse_watlev_property(example)
+    assert result is None
+
+
+def test_parse_watlev_property():
+    example = {"WATLEV": 465.0}
+    result = _parse_watlev_property(example)
+    assert result == 465

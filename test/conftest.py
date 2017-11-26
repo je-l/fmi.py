@@ -46,3 +46,9 @@ def forecast_node(forecast_gml):
 def api_exception():
     with open(path.join(FIXTURE_DIR, "exception.gml"), "rb") as ex_file:
         return etree.fromstring(ex_file.read())
+
+
+@pytest.fixture(scope="session")
+def sea_level_gml():
+    with open(path.join(FIXTURE_DIR, "sea_level.gml"), "rb") as gml_file:
+        return gml_file.read()

@@ -23,7 +23,7 @@ def _extract_features(gml):
 def parse_latest_observations(gml):
     """Parse latest observations gml into observation objects.
     :param gml: raw gml text
-    :return: list of latest observations
+    :returns: list of latest observations
     :raises ValueError: error raised if fmi api returns error
     """
 
@@ -34,10 +34,38 @@ def parse_latest_observations(gml):
 def parse_forecast(gml):
     """Parse forecast API response into list of forecast objects.
     :param gml: raw gml
-    :return: list of forecast objects
+    :returns: list of forecast objects
     """
     merged = _extract_features(gml)
     return [Forecast(**i) for i in merged]
+
+
+def _parse_watlev_property(feature):
+    if feature["WATLEV"] == "NaN":
+        return None
+
+    return int(float(feature["WATLEV"]))
+
+
+def parse_sea_levels(gml):
+    """Parse sea level API response
+    :param gml: input xml
+    :returns: list of timestamp - sea level -pairs
+    """
+    raw_features = _extract_features(gml)
+
+    timestamps = (o["timestamp"] for o in raw_features)
+    sea_levels = (_parse_watlev_property(o) for o in raw_features)
+
+    combined = list(zip(timestamps, sea_levels))
+
+    while combined and combined[-1][1] is None:
+        combined.pop()
+
+    if not combined:
+        raise ValueError("no sea level data available with given parameters")
+
+    return combined
 
 
 def _parse_exception(gml):
