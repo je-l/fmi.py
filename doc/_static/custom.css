@@ -1,0 +1,12 @@
+div.document, div.footer {
+  width: auto;
+  max-width: 1000px;
+}
+
+div.bodywrapper {
+  min-height: 100vh;
+}
+
+div.highlight {
+  font-size: 1rem;
+}

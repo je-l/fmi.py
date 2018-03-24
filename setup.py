@@ -31,7 +31,11 @@ setup(name="fmi.py",
                    "Programming Language :: Python :: 3.6",
                    "Framework :: AsyncIO"],
       extras_require={
-          "tests": [
-              "pytest>=3.2.5,<4.0.0", "pytest-asyncio==0.8.0"],
+          "dev": [
+              "pytest>=3.2.5,<4.0.0",
+              "pytest-asyncio==0.8.0"],
           "docs": [
-              "sphinxcontrib-asyncio==0.2.0", "sphinx-rtd-theme==0.2.4"]})
+              "sphinx>=1.7.2,<2.0.0",
+              "sphinxcontrib-asyncio==0.2.0",
+              "sphinx-rtd-theme==0.2.4"]
+      })
