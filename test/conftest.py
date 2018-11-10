@@ -3,11 +3,12 @@ Pytest utility functions
 """
 
 import pytest
-from os import path
+from os import path, environ
 from lxml import etree
 
-FIXTURE_DIR = path.join(path.dirname(path.realpath(__file__)), "fixture")
+import fmi
 
+FIXTURE_DIR = path.join(path.dirname(path.realpath(__file__)), "fixture")
 
 def parse_first_node(gml):
     parsed = etree.fromstring(gml)
@@ -52,3 +53,13 @@ def api_exception():
 def sea_level_gml():
     with open(path.join(FIXTURE_DIR, "sea_level.gml"), "rb") as gml_file:
         return gml_file.read()
+
+
+@pytest.fixture(scope="session")
+def real_client():
+    key = environ.get('FMI_KEY')
+
+    if not key:
+        return None
+
+    return fmi.Client(key)

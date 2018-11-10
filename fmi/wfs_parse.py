@@ -6,11 +6,22 @@ from fmi import Observation, Forecast
 from fmi.model import OBSERVATION_SCHEMA
 
 
-def _extract_features(gml):
+def _read_raw_gml(gml):
+    is_invalid_api_key = gml.startswith(b"<html>")
+
+    if is_invalid_api_key:
+        raise ValueError("invalid api key")
+
     parsed_gml = etree.fromstring(gml)
     if parsed_gml.tag.endswith("ExceptionReport"):
         error_reason = _parse_exception(parsed_gml)
         raise ValueError(error_reason)
+
+    return parsed_gml
+
+
+def _extract_features(gml):
+    parsed_gml = _read_raw_gml(gml)
 
     elements = parsed_gml.findall(".//BsWfs:BsWfsElement",
                                   namespaces=parsed_gml.nsmap)

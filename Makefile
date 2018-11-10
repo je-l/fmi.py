@@ -1,16 +1,22 @@
 .PHONY: test
 
+test:
+	pytest -m "not slow"
+
+travis: lint
+	pytest -v
+
 init:
 	pip install '.[docs,dev]'
-
-test:
-	pytest
 
 coverage:
 	pytest --cov=fmi --cov-report term --cov-report html test
 
 lint:
-	pylint fmi
+	black --check --diff .
+
+lint-fix:
+	black .
 
 publish:
 	rm -rf dist
