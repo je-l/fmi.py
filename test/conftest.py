@@ -10,6 +10,7 @@ import fmi
 
 FIXTURE_DIR = path.join(path.dirname(path.realpath(__file__)), "fixture")
 
+
 def parse_first_node(gml):
     parsed = etree.fromstring(gml)
     xpath = ".//BsWfs:BsWfsElement"
@@ -57,7 +58,7 @@ def sea_level_gml():
 
 @pytest.fixture(scope="session")
 def real_client():
-    key = environ.get('FMI_KEY')
+    key = environ.get("FMI_KEY")
 
     if not key:
         return None

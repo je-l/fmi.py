@@ -23,8 +23,9 @@ def _read_raw_gml(gml):
 def _extract_features(gml):
     parsed_gml = _read_raw_gml(gml)
 
-    elements = parsed_gml.findall(".//BsWfs:BsWfsElement",
-                                  namespaces=parsed_gml.nsmap)
+    elements = parsed_gml.findall(
+        ".//BsWfs:BsWfsElement", namespaces=parsed_gml.nsmap
+    )
 
     groups = itertools.groupby(elements, _extract_node_id)
 

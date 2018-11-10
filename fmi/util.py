@@ -6,6 +6,7 @@ def authed_fetch(api_key):
     :param api_key: fmi api key
     :rtype coroutine:
     """
+
     async def wrapped(url, **aiohttp_kwargs):
         if aiohttp_kwargs.get("headers"):
             aiohttp_kwargs["headers"]["fmi-apikey"] = api_key

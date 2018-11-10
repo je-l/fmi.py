@@ -3,8 +3,8 @@
 test:
 	pytest -m "not slow"
 
-travis: lint
-	pytest -v
+travis:
+	./script/travis.sh
 
 init:
 	pip install '.[docs,dev]'

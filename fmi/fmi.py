@@ -8,7 +8,7 @@ from fmi import util
 from fmi.wfs_parse import (
     parse_latest_observations,
     parse_forecast,
-    parse_sea_levels
+    parse_sea_levels,
 )
 
 from fmi.model import OBSERVATION_PARAMS
@@ -28,8 +28,9 @@ class Client:
 
         self.fetch = util.authed_fetch(api_key)
 
-    async def latest_observations(self, place, starttime=None, timestep=10,
-                                  **aiohttp_kwargs):
+    async def latest_observations(
+        self, place, starttime=None, timestep=10, **aiohttp_kwargs
+    ):
         """Fetch most recent weather observations for a specific place. Default
         is last 12 hours in 10 minute intervals.
 
@@ -55,7 +56,7 @@ class Client:
             "request": "getFeature",
             "storedquery_id": "fmi::observations::weather::simple",
             "place": place,
-            "parameters": sensor_parameters
+            "parameters": sensor_parameters,
         }
 
         if timestep % 10 != 0:
@@ -86,7 +87,7 @@ class Client:
         params = {
             "request": "getFeature",
             "storedquery_id": "fmi::forecast::hirlam::surface::point::simple",
-            "place": place
+            "place": place,
         }
 
         if timestep != 60:
@@ -113,12 +114,19 @@ class Client:
         half_hour_before = datetime.utcnow() - timedelta(minutes=30)
         iso_time = datetime.isoformat(half_hour_before.replace(microsecond=0))
 
-        observations = await self.latest_observations(place, starttime=iso_time,
-                                                      **aiohttp_kwargs)
+        observations = await self.latest_observations(
+            place, starttime=iso_time, **aiohttp_kwargs
+        )
         return observations[-1]
 
-    async def sea_levels(self, fmisid, timestep=60, starttime=None,
-                         endtime=None, **aiohttp_kwargs):
+    async def sea_levels(
+        self,
+        fmisid,
+        timestep=60,
+        starttime=None,
+        endtime=None,
+        **aiohttp_kwargs
+    ):
         """Fetch 12 hour sea level observations from a mareograph station.
 
         :param fmisid: FMISID of a mareograph station as listed `here

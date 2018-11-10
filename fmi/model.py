@@ -112,24 +112,27 @@ class Forecast:
         self.pressure = float(kwargs.get("Pressure"))
 
         #:
-        self.radiation_diffuse_acc = \
-            float(kwargs.get("RadiationDiffuseAccumulation"))
+        self.radiation_diffuse_acc = float(
+            kwargs.get("RadiationDiffuseAccumulation")
+        )
 
         #:
-        self.radiation_global_acc = \
-            float(kwargs.get("RadiationGlobalAccumulation"))
+        self.radiation_global_acc = float(
+            kwargs.get("RadiationGlobalAccumulation")
+        )
 
         #:
-        self.radiation_lwa_acc = \
-            float(kwargs.get("RadiationLWAccumulation"))
+        self.radiation_lwa_acc = float(kwargs.get("RadiationLWAccumulation"))
 
         #:
-        self.radiation_netsurface_lwa_acc = \
-            float(kwargs.get("RadiationNetSurfaceLWAccumulation"))
+        self.radiation_netsurface_lwa_acc = float(
+            kwargs.get("RadiationNetSurfaceLWAccumulation")
+        )
 
         #:
-        self.radiation_netsurface_swa_acc = \
-            float(kwargs.get("RadiationNetSurfaceSWAccumulation"))
+        self.radiation_netsurface_swa_acc = float(
+            kwargs.get("RadiationNetSurfaceSWAccumulation")
+        )
 
         #: temperature in celsius at two meters from ground surface
         self.temperature = float(kwargs.get("Temperature"))

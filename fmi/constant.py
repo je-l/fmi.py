@@ -1,24 +1,20 @@
 # taken from https://github.com/lepinkainen/pyfibot/
 OBSERVATION_CODES = {
     10: "utua",
-
     20: "sumua",
     21: "sadetta",
     22: "tihkusadetta",
     23: "vesisadetta",
     24: "lumisadetta",
     25: "jäätävää tihkua",
-
     30: "sumua",
     31: "sumua",
     32: "sumua",
     33: "sumua",
     34: "sumua",
-
     40: "sadetta",
     41: "heikkoa tai kohtalaista sadetta",
     42: "kovaa sadetta",
-
     50: "tihkusadetta",
     51: "heikkoa tihkusadetta",
     52: "kohtalaista tihkusadetta",
@@ -26,7 +22,6 @@ OBSERVATION_CODES = {
     54: "jäätävää heikkoa tihkusadetta",
     55: "jäätävää kohtalaista tihkusadetta",
     56: "jäätävää kovaa tihkusadetta",
-
     60: "vesisadetta",
     61: "heikkoa vesisadetta",
     62: "kohtalaista vesisadetta",
@@ -36,7 +31,6 @@ OBSERVATION_CODES = {
     66: "jäätävää kovaa vesisadetta",
     67: "räntää",
     68: "räntää",
-
     70: "lumisadetta",
     71: "heikkoa lumisadetta",
     72: "kohtalaista lumisadetta",
@@ -46,7 +40,6 @@ OBSERVATION_CODES = {
     76: "kovaa jääjyväsadetta",
     77: "lumijyväsiä",
     78: "jääkiteitä",
-
     80: "sadekuuroja",
     81: "heikkoja sadekuuroja",
     82: "kohtalaisia sadekuuroja",
@@ -83,5 +76,5 @@ FORECAST_CODES = {
     82: "räntäsadetta",
     83: "voimakasta räntäsadetta",
     91: "utua",
-    92: "sumua"
+    92: "sumua",
 }
