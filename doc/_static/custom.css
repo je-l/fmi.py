@@ -10,3 +10,7 @@ div.bodywrapper {
 div.highlight {
   font-size: 1rem;
 }
+
+div.body {
+  min-width: 0;
+}
