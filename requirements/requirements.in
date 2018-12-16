@@ -1,0 +1,4 @@
+# requirements for python 3.6 and 3.7
+
+-r requirements-py35.in
+black

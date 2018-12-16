@@ -43,7 +43,7 @@ class Client:
             This is useful for providing timeout, proxy etc. "low level"
             configuration for the underlying http requests. For possible values
             see
-            `aiohttp.ClientSession.request <http://aiohttp.readthedocs.io\
+            `aiohttp.ClientSession.request <https://aiohttp.readthedocs.io\
             /en/stable/client_reference.html#aiohttp.ClientSession.request>`_
 
         :raises ValueError: error raised if fmi api returns error, for example
@@ -130,7 +130,7 @@ class Client:
         """Fetch 12 hour sea level observations from a mareograph station.
 
         :param fmisid: FMISID of a mareograph station as listed `here
-            <http://en.ilmatieteenlaitos.fi/observation-stations>`_
+            <https://en.ilmatieteenlaitos.fi/observation-stations>`_
         :param timestep: time interval between results in minutes. Must be
             divisible by 30
         :param starttime: UTC ISO 8601 time string. Maximum precision is one

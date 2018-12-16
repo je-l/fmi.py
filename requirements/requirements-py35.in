@@ -1,5 +1,4 @@
-# prod dependencies are in setup.py.
-# This file is used by pip-compile
+# base python requirements, used by python 3.5 build
 
 pytest
 pytest-asyncio
@@ -12,4 +11,3 @@ sphinx-rtd-theme
 lxml
 aiohttp
 python-dateutil
-black
