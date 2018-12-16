@@ -16,6 +16,7 @@ Some differences to other similar projects:
 Installation
 ------------
 
+
 .. code:: bash
 
     pip install fmi.py
@@ -24,3 +25,17 @@ Documentation
 -------------
 
 https://fmipy.readthedocs.io/
+
+Development
+-----------
+
+pip-tools_ is used for manaing dependencies. First create virtualenv with
+supported python version, and then:
+
+.. code:: bash
+
+    pip install pip-tools
+    pip-sync
+
+
+.. _pip-tools: https://github.com/jazzband/pip-tools

@@ -10,3 +10,5 @@
 /.pytest_cache
 /htmlcov
 /.coverage
+/.mypy_cache
+/build

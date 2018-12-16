@@ -7,7 +7,8 @@ travis:
 	./script/travis.sh
 
 init:
-	pip install '.[docs,dev]'
+	pip install pip-tools
+	pip-sync
 
 coverage:
 	pytest --cov=fmi --cov-report term --cov-report html test

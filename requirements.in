@@ -1,0 +1,15 @@
+# prod dependencies are in setup.py.
+# This file is used by pip-compile
+
+pytest
+pytest-asyncio
+pytest-cov
+pylint
+twine
+sphinx
+sphinxcontrib-asyncio
+sphinx-rtd-theme
+lxml
+aiohttp
+python-dateutil
+black

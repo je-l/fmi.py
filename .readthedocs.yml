@@ -1,7 +1,10 @@
+build:
+    image: latest
+
+python:
+    version: 3.6
+
 formats:
     - none
 
-python:
-    pip_install: true
-    extra_requirements:
-        - docs
+requirements_file: requirements.txt
