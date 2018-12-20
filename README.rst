@@ -37,5 +37,12 @@ supported python version, and then:
     pip install pip-tools
     pip-sync
 
+Alternatively use docker:
+
+.. code:: bash
+
+    docker build -t fmi.py
+    docker run -it fmi.py
+
 
 .. _pip-tools: https://github.com/jazzband/pip-tools
