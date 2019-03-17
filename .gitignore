@@ -10,5 +10,6 @@
 /.pytest_cache
 /htmlcov
 /.coverage
-/.mypy_cache
+.mypy_cache
 /build
+/out

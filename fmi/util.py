@@ -1,13 +1,17 @@
+from typing import Callable, Dict, Any, Awaitable
+
 import aiohttp
 
 
-def authed_fetch(api_key):
+def authed_fetch(api_key: str) -> Callable[..., Awaitable[bytes]]:
     """Wrap aiohttp request with authorization header
     :param api_key: fmi api key
     :rtype coroutine:
     """
 
-    async def wrapped(url, **aiohttp_kwargs):
+    async def wrapped(url: str, aiohttp_kwargs: Dict[str, Any]) -> bytes:
+        aiohttp_kwargs = aiohttp_kwargs or {}
+
         if aiohttp_kwargs.get("headers"):
             aiohttp_kwargs["headers"]["fmi-apikey"] = api_key
         else:
@@ -15,6 +19,7 @@ def authed_fetch(api_key):
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url, **aiohttp_kwargs) as response:
-                return await response.read()
+                res: bytes = await response.read()
+                return res
 
     return wrapped

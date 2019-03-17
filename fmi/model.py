@@ -1,7 +1,9 @@
+from typing import Callable, Dict, Optional, Union, Any
 from pprint import pformat
+
 from fmi.constant import OBSERVATION_CODES, FORECAST_CODES
 
-OBSERVATION_PARAMS = {
+OBSERVATION_PARAMS: Dict[str, Callable[[str], Union[float, int]]] = {
     "t2m": float,
     "p_sea": float,
     "rh": float,
@@ -16,157 +18,208 @@ OBSERVATION_PARAMS = {
     "wawa": lambda s: int(float(s)),
 }
 
-OBSERVATION_SCHEMA = {
-    "coordinates": dict,
+OBSERVATION_SCHEMA: Dict[str, Callable[[str], Any]] = {
+    "lat": float,
+    "lon": float,
     "timestamp": int,
     **OBSERVATION_PARAMS,
 }
 
 
+class Coordinates:
+    def __init__(self, lat: float, lon: float) -> None:
+        #:
+        self.lat = lat
+
+        #:
+        self.lon = lon
+
+
 class Observation:
     """Represents single weather condition state."""
 
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        coordinates: Coordinates,
+        humidity: int,
+        temperature: float,
+        timestamp: int,
+        dewpoint: Optional[float] = None,
+        pressure: Optional[int] = None,
+        precipitation_1h: Optional[float] = None,
+        snow: Optional[int] = None,
+        visibility: Optional[int] = None,
+        wind_direction: Optional[int] = None,
+        wind_gust: Optional[int] = None,
+        wind_speed: Optional[int] = None,
+        wawa: Optional[int] = None,
+    ) -> None:
         #: dictionary of lat/lon WGS84 coordinates for the interpreted place
-        self.coordinates = kwargs.get("coordinates")
+        self.coordinates = coordinates
 
         #: pressure at sea level
-        self.pressure = kwargs.get("p_sea")
+        self.pressure = pressure
 
         #: rain (1h average)
-        self.precipitation_1h = kwargs.get("r_1h")
+        self.precipitation_1h = precipitation_1h
 
         #: relative humidity percentage
-        self.humidity = kwargs.get("rh")
+        self.humidity = humidity
 
         #: snow in millimeters
-        self.snow = kwargs.get("snow_aws")
+        self.snow = snow
 
         #: temperature in celsius at two meters from ground surface
-        self.temperature = kwargs.get("t2m")
+        self.temperature = temperature
 
         #: dew point
-        self.dewpoint = kwargs.get("td")
+        self.dewpoint = dewpoint
 
         #: observation timestamp in unix seconds
-        self.timestamp = kwargs.get("timestamp")
+        self.timestamp = timestamp
 
         #: visibility in meters
-        self.visibility = kwargs.get("vis")
+        self.visibility = visibility
 
         #: wind direction in degrees for 10 minutes
-        self.wind_direction = kwargs.get("wd_10min")
+        self.wind_direction = wind_direction
 
         #: wind gust for 10 minutes
-        self.wind_gust = kwargs.get("wg_10min")
+        self.wind_gust = wind_gust
 
         #: wind speed for 10 minutes
-        self.wind_speed = kwargs.get("ws_10min")
+        self.wind_speed = wind_speed
 
-        self._wawa = kwargs.get("wawa")
+        self._wawa = wawa
 
     @property
-    def weather_text(self):
+    def weather_text(self) -> Optional[str]:
         """finnish description for the observation"""
-        return OBSERVATION_CODES.get(self._wawa)
+        if self._wawa:
+            return OBSERVATION_CODES[self._wawa]
+        return None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return pformat(self.__dict__)
 
 
 class Forecast:
-    """Data class for representing forecast API responses"""
+    """Data class for representing forecast API responses
+    """
 
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        dewpoint: float,
+        height: float,
+        high_cloud_cover: float,
+        humidity: float,
+        landseamask: float,
+        low_cloud_cover: float,
+        max_wind: float,
+        med_cloud_cover: float,
+        precipitation_1h: float,
+        precipitation_amount: float,
+        pressure: float,
+        radiation_diffuse_acc: float,
+        radiation_global_acc: float,
+        radiation_lwa_acc: float,
+        radiation_netsurface_lwa_acc: float,
+        radiation_netsurface_swa_acc: float,
+        temperature: float,
+        total_cloud_cover: float,
+        wind_direction: int,
+        wind_gust: float,
+        wind_speed: float,
+        wind_ums: float,
+        wind_vms: float,
+        coordinates: Coordinates,
+        timestamp: int,
+        weather_symbol_code: int,
+    ) -> None:
         #: dew point
-        self.dewpoint = float(kwargs.get("DewPoint"))
+        self.dewpoint: float = dewpoint
 
         #: geopotential height
-        self.height = float(kwargs.get("GeopHeight"))
+        self.height = height
 
         #:
-        self.high_cloud_cover = float(kwargs.get("HighCloudCover"))
+        self.high_cloud_cover = high_cloud_cover
 
         #: relative humidity percentage
-        self.humidity = float(kwargs.get("Humidity"))
+        self.humidity = humidity
 
         #:
-        self.landseamask = float(kwargs.get("LandSeaMask"))
+        self.landseamask = landseamask
 
         #:
-        self.low_cloud_cover = float(kwargs.get("LowCloudCover"))
+        self.low_cloud_cover = low_cloud_cover
 
         #:
-        self.max_wind = float(kwargs.get("MaximumWind"))
+        self.max_wind = max_wind
 
         #:
-        self.med_cloud_cover = float(kwargs.get("MediumCloudCover"))
+        self.med_cloud_cover = med_cloud_cover
 
         #: rain (1h average)
-        self.precipitation_1h = float(kwargs.get("Precipitation1h"))
+        self.precipitation_1h = precipitation_1h
 
         #: rain amount
-        self.precipitation_amount = float(kwargs.get("PrecipitationAmount"))
+        self.precipitation_amount = precipitation_amount
 
         #: pressure at sea level
-        self.pressure = float(kwargs.get("Pressure"))
+        self.pressure = pressure
 
         #:
-        self.radiation_diffuse_acc = float(
-            kwargs.get("RadiationDiffuseAccumulation")
-        )
+        self.radiation_diffuse_acc = radiation_diffuse_acc
 
         #:
-        self.radiation_global_acc = float(
-            kwargs.get("RadiationGlobalAccumulation")
-        )
+        self.radiation_global_acc = radiation_global_acc
 
         #:
-        self.radiation_lwa_acc = float(kwargs.get("RadiationLWAccumulation"))
+        self.radiation_lwa_acc = radiation_lwa_acc
 
         #:
-        self.radiation_netsurface_lwa_acc = float(
-            kwargs.get("RadiationNetSurfaceLWAccumulation")
-        )
+        self.radiation_netsurface_lwa_acc = radiation_netsurface_lwa_acc
 
         #:
-        self.radiation_netsurface_swa_acc = float(
-            kwargs.get("RadiationNetSurfaceSWAccumulation")
-        )
+        self.radiation_netsurface_swa_acc = radiation_netsurface_swa_acc
 
         #: temperature in celsius at two meters from ground surface
-        self.temperature = float(kwargs.get("Temperature"))
+        self.temperature = temperature
 
         #:
-        self.total_cloud_cover = float(kwargs.get("TotalCloudCover"))
+        self.total_cloud_cover = total_cloud_cover
 
         #: wind direction in degrees for 10 minutes
-        self.wind_direction = float(kwargs.get("WindDirection"))
+        self.wind_direction = wind_direction
 
         #: wind gust for 10 minutes
-        self.wind_gust = float(kwargs.get("WindGust"))
+        self.wind_gust = wind_gust
 
         #: wind speed for 10 minutes
-        self.wind_speed = float(kwargs.get("WindSpeedMS"))
+        self.wind_speed = wind_speed
 
         #:
-        self.wind_ums = float(kwargs.get("WindUMS"))
+        self.wind_ums = wind_ums
 
         #:
-        self.wind_vms = float(kwargs.get("WindVMS"))
+        self.wind_vms = wind_vms
 
         #: dictionary of lat/lon WGS84 coordinates for the interpreted place
-        self.coordinates = kwargs.get("coordinates")
+        self.coordinates = coordinates
 
         #: observation timestamp in unix seconds
-        self.timestamp = kwargs.get("timestamp")
+        self.timestamp = timestamp
 
-        self._weather_symbol_code = int(float(kwargs.get("WeatherSymbol3")))
+        self._weather_symbol_code = weather_symbol_code
 
     @property
-    def weather_text(self):
+    def weather_text(self) -> Optional[str]:
         """finnish description for the observation"""
-        return FORECAST_CODES.get(self._weather_symbol_code)
+        if self._weather_symbol_code:
+            return FORECAST_CODES[self._weather_symbol_code]
 
-    def __str__(self):
+        return None
+
+    def __str__(self) -> str:
         return pformat(self.__dict__)

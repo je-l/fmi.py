@@ -23,10 +23,11 @@ def test_wfs_observation_parsing(observation_gml):
 
 def test_wfs_parse_coords(observation_node):
     parsed = _parse_feature(observation_node)
-    coords = parsed["coordinates"]
+    lat = float(parsed["lat"])
+    lon = float(parsed["lon"])
 
-    assert coords["lon"] > 0
-    assert coords["lat"] < 100
+    assert lon > 0
+    assert lat < 100
 
 
 def test_wfs_parse_property(observation_node):
@@ -48,22 +49,10 @@ def test_time_parsed_exact(observation_node):
     assert result_timestamp.minute == 20
 
 
-def test_create_observation():
-    example = {"t2m": 14.5}
-    parsed = _dict_to_observation(example)
-    assert parsed.temperature == approx(14.5)
-
-
-def test_should_not_have_nan_in_observation():
-    example = {"t2m": "NaN"}
-    parsed = _dict_to_observation(example)
-    assert "NaN" not in parsed.__dict__.values()
-
-
 def test_parse_forecast_not_empty(forecast_gml):
     forecasts = parse_forecast(forecast_gml)
 
-    assert len(forecasts) > 0
+    assert forecasts
 
 
 def test_parse_forecast_has_temperature(forecast_gml):

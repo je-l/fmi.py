@@ -19,6 +19,7 @@ setup(
     url="https://www.github.com/je-l/fmi.py",
     author="je-l",
     packages=["fmi"],
+    package_data={"fmi": ["py.typed"]},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3.5",

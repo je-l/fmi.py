@@ -14,11 +14,18 @@ Client
 Observation
 -----------
 
-.. autoclass:: fmi.Observation
+.. autoclass:: fmi.Observation()
     :members:
 
 Forecast
 -----------
 
-.. autoclass:: fmi.Forecast
+.. autoclass:: fmi.Forecast()
+    :members:
+
+
+Coordinates
+-----------
+
+.. autoclass:: fmi.Coordinates()
     :members:

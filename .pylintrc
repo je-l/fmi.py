@@ -1,0 +1,10 @@
+[MESSAGES CONTROL]
+
+disable=bad-continuation,
+        missing-docstring,
+        too-many-instance-attributes,
+        too-many-arguments,
+        too-few-public-methods,
+        too-many-locals,
+
+extension-pkg-whitelist=lxml

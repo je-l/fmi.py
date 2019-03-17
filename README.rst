@@ -29,7 +29,7 @@ https://fmipy.readthedocs.io/
 Development
 -----------
 
-pip-tools_ is used for manaing dependencies. First create virtualenv with
+pip-tools_ is used for managing dependencies. First create virtualenv with
 supported python version, and then:
 
 .. code:: bash

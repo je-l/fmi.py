@@ -6,11 +6,13 @@ pip install pip-tools
 
 if [[ "$TRAVIS_PYTHON_VERSION" = "3.5" ]]; then
   pip-sync requirements/requirements-py35.txt
-  echo "skipping lint for python 3.5"
+  echo "skipping black for python 3.5"
 else
   pip-sync requirements/requirements.txt
-  make lint
+  make black
 fi
 
-pytest -v
+make mypy pylint slowtest
+
+# documentation
 make -C doc html linkcheck

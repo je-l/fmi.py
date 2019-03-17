@@ -1,10 +1,12 @@
 """Main library interface for the FMI api
 """
+from typing import List, Tuple, Optional, Any
 
 from urllib.parse import urlencode
 from datetime import datetime, timedelta
-from fmi import util
 
+from fmi import util
+from fmi.model import Observation, Forecast
 from fmi.wfs_parse import (
     parse_latest_observations,
     parse_forecast,
@@ -19,7 +21,7 @@ WFS_URL = "https://data.fmi.fi/wfs?"
 class Client:
     """Client for interacting with FMI api."""
 
-    def __init__(self, api_key):
+    def __init__(self, api_key: str) -> None:
         """
         :param api_key: FMI api key
         """
@@ -29,8 +31,12 @@ class Client:
         self.fetch = util.authed_fetch(api_key)
 
     async def latest_observations(
-        self, place, starttime=None, timestep=10, **aiohttp_kwargs
-    ):
+        self,
+        place: str,
+        starttime: Optional[str] = None,
+        timestep: int = 10,
+        aiohttp_kwargs: Any = None,
+    ) -> List[Observation]:
         """Fetch most recent weather observations for a specific place. Default
         is last 12 hours in 10 minute intervals.
 
@@ -63,17 +69,23 @@ class Client:
             raise ValueError("timestep must be divisable by 10")
 
         if timestep != 10:
-            params["timestep"] = timestep
+            params["timestep"] = str(timestep)
 
         if starttime:
             params["starttime"] = starttime
 
         url = WFS_URL + urlencode(params)
-        unparsed_gml = await self.fetch(url, **aiohttp_kwargs)
+        unparsed_gml = await self.fetch(url, aiohttp_kwargs)
 
         return parse_latest_observations(unparsed_gml)
 
-    async def forecast(self, place, timestep=60, count=5, **aiohttp_kwargs):
+    async def forecast(
+        self,
+        place: str,
+        timestep: int = 60,
+        count: int = 5,
+        aiohttp_kwargs: Any = None,
+    ) -> List[Forecast]:
         """Fetch forecast for single place.
 
         :param place: search term for place. For example "Arabia, Helsinki"
@@ -91,18 +103,20 @@ class Client:
         }
 
         if timestep != 60:
-            params["timestep"] = timestep
+            params["timestep"] = str(timestep)
 
         if count != 5:
             # API count parameter affects the returned properties, not returned
             # forecast amount, so we must multiply it with the # of properties
-            params["count"] = count * 24
+            params["count"] = str(count * 24)
 
         url = WFS_URL + urlencode(params)
-        unparsed_gml = await self.fetch(url, **aiohttp_kwargs)
+        unparsed_gml = await self.fetch(url, aiohttp_kwargs)
         return parse_forecast(unparsed_gml)
 
-    async def weather_now(self, place, **aiohttp_kwargs):
+    async def weather_now(
+        self, place: str, aiohttp_kwargs: Any = None
+    ) -> Observation:
         """Fetch current weather for a specific place.
 
         :param place: term for the place, city, or town.
@@ -115,18 +129,25 @@ class Client:
         iso_time = datetime.isoformat(half_hour_before.replace(microsecond=0))
 
         observations = await self.latest_observations(
-            place, starttime=iso_time, **aiohttp_kwargs
+            place,
+            starttime=iso_time,
+            timestep=10,
+            aiohttp_kwargs=aiohttp_kwargs,
         )
+
+        if not observations:
+            raise ValueError('No results found for "{}"'.format(place))
+
         return observations[-1]
 
     async def sea_levels(
         self,
-        fmisid,
-        timestep=60,
-        starttime=None,
-        endtime=None,
-        **aiohttp_kwargs
-    ):
+        fmisid: str,
+        starttime: Optional[str] = None,
+        endtime: Optional[str] = None,
+        timestep: int = 60,
+        aiohttp_kwargs: Any = None,
+    ) -> List[Tuple[str, Optional[int]]]:
         """Fetch 12 hour sea level observations from a mareograph station.
 
         :param fmisid: FMISID of a mareograph station as listed `here
@@ -156,5 +177,5 @@ class Client:
 
         url = WFS_URL + urlencode(params)
 
-        unparsed_gml = await self.fetch(url, **aiohttp_kwargs)
+        unparsed_gml = await self.fetch(url, aiohttp_kwargs)
         return parse_sea_levels(unparsed_gml)
