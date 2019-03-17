@@ -12,3 +12,4 @@ sphinx-rtd-theme
 lxml
 aiohttp
 python-dateutil
+mypy
