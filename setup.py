@@ -27,7 +27,7 @@ setup(
         "Framework :: AsyncIO",
         "Typing :: Typed",
     ],
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     install_requires=[
         "lxml>=4.1.1,<5.0.0",
         "aiohttp>=3.0.8,<4.0.0",
