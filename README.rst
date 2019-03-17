@@ -16,7 +16,6 @@ Some differences to other similar projects:
 Installation
 ------------
 
-
 .. code:: bash
 
     pip install fmi.py

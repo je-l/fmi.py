@@ -22,10 +22,10 @@ setup(
     package_data={"fmi": ["py.typed"]},
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Framework :: AsyncIO",
+        "Typing :: Typed",
     ],
     python_requires=">=3.5",
     install_requires=[

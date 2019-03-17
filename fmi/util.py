@@ -5,8 +5,6 @@ import aiohttp
 
 def authed_fetch(api_key: str) -> Callable[..., Awaitable[bytes]]:
     """Wrap aiohttp request with authorization header
-    :param api_key: fmi api key
-    :rtype coroutine:
     """
 
     async def wrapped(url: str, aiohttp_kwargs: Dict[str, Any]) -> bytes:

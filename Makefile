@@ -9,7 +9,7 @@ slowtest:
 travis:
 	./script/travis.sh
 
-init:
+install:
 	pip install pip-tools
 	pip-sync requirements/requirements.txt
 

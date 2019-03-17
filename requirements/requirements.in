@@ -1,4 +1,14 @@
-# requirements for python 3.6 and 3.7
+# development dependencies
 
--r requirements-py35.in
 black
+pytest
+pytest-asyncio
+pytest-cov
+pylint
+twine
+sphinx
+sphinxcontrib-asyncio
+sphinx-rtd-theme
+lxml
+aiohttp
+python-dateutil
