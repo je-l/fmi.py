@@ -54,13 +54,3 @@ def api_exception():
 def sea_level_gml():
     with open(path.join(FIXTURE_DIR, "sea_level.gml"), "rb") as gml_file:
         return gml_file.read()
-
-
-@pytest.fixture(scope="session")
-def real_client():
-    key = environ.get("FMI_KEY")
-
-    if not key:
-        return None
-
-    return fmi.Client(key)

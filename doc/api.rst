@@ -1,11 +1,16 @@
 Api reference
 =============
 
-Client
-------
+Main API
+--------
 
-.. autoclass:: fmi.Client
-    :members:
+.. autofunction:: fmi.latest_observations
+
+.. autofunction:: fmi.forecast
+
+.. autofunction:: fmi.weather_now
+
+.. autofunction:: fmi.sea_levels
 
 .. WARNING::
     Different weather stations have considerably different selection of data
