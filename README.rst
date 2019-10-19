@@ -4,6 +4,12 @@
 .. image:: https://img.shields.io/travis/je-l/fmi.py.svg?style=flat-square
     :target: https://travis-ci.org/je-l/fmi.py
 
+.. image:: https://img.shields.io/readthedocs/fmipy.svg?style=flat-square
+    :target: https://fmipy.readthedocs.io/en/latest/
+
+.. image:: https://img.shields.io/badge/mypy-checked-blue.svg?style=flat-square
+    :target: http://mypy-lang.org
+
 
 Fmi.py is a library providing simple interface for interacting with FMI weather
 and forecast API.
