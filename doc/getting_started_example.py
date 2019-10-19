@@ -7,8 +7,10 @@ import fmi
 async def main():
     observation = await fmi.weather_now("turku")
 
-    print(f"it's {observation.temperature}°C warm and wind is blowing "
-          f"{observation.wind_speed} m/s")
+    print(
+        f"it's {observation.temperature}°C warm and wind is blowing "
+        f"{observation.wind_speed} m/s"
+    )
 
 
 asyncio.run(main())
