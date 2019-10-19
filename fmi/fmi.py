@@ -1,11 +1,11 @@
 """Main library interface for the FMI api
 """
-from typing import List, Tuple, Optional, Any
+from typing import List, Tuple, Optional, Any, Dict
 
 from urllib.parse import urlencode
+import aiohttp
 from datetime import datetime, timedelta
 
-from fmi import util
 from fmi.model import Observation, Forecast
 from fmi.wfs_parse import (
     parse_latest_observations,
@@ -17,7 +17,14 @@ from fmi.model import OBSERVATION_PARAMS
 
 WFS_URL = "https://opendata.fmi.fi/wfs?"
 
-fetch = util.authed_fetch()
+
+async def fetch(url: str, aiohttp_kwargs: Dict[str, Any]) -> bytes:
+    aiohttp_kwargs = aiohttp_kwargs or {}
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, **aiohttp_kwargs) as response:
+            res: bytes = await response.read()
+            return res
 
 
 async def latest_observations(
