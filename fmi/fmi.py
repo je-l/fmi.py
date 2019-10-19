@@ -1,10 +1,10 @@
 """Main library interface for the FMI api
 """
 from typing import List, Tuple, Optional, Any, Dict
+from datetime import datetime, timedelta
 
 from urllib.parse import urlencode
 import aiohttp
-from datetime import datetime, timedelta
 
 from fmi.model import Observation, Forecast
 from fmi.wfs_parse import (
