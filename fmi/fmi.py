@@ -15,7 +15,7 @@ from fmi.wfs_parse import (
 
 from fmi.model import OBSERVATION_PARAMS
 
-WFS_URL = "https://opendata.fmi.fi/wfs?"
+WFS_URL = "https://opendata.fmi.fi/wfs/eng?"
 
 
 async def fetch(url: str, aiohttp_kwargs: Dict[str, Any]) -> bytes:
@@ -28,16 +28,21 @@ async def fetch(url: str, aiohttp_kwargs: Dict[str, Any]) -> bytes:
 
 
 async def latest_observations(
-    place: str,
+    place: Optional[str] = None,
+    fmisid: Optional[int] = None, 
     starttime: Optional[str] = None,
+    endtime: Optional[str] = None,
     timestep: int = 10,
-    aiohttp_kwargs: Any = None,
+    aiohttp_kwargs: Any = None
 ) -> List[Observation]:
     """Fetch most recent weather observations for a specific place. Default
     is last 12 hours in 10 minute intervals.
 
     :param place: name for city or town
+    :param fmisid: id of a location
     :param starttime: fetch observations after this time. Use ISO 8601
+        format with second precision
+    :param endtime: fetch observations bevore this time. Use ISO 8601
         format with second precision
     :param timestep: interval between observations in minutes. Must be
         divisible by 10
@@ -57,7 +62,6 @@ async def latest_observations(
     params = {
         "request": "getFeature",
         "storedquery_id": "fmi::observations::weather::simple",
-        "place": place,
         "parameters": sensor_parameters,
     }
 
@@ -69,11 +73,21 @@ async def latest_observations(
 
     if starttime:
         params["starttime"] = starttime
+        
+    if endtime:
+        params["endtime"] = endtime
+        
+    if place:
+        params["place"] = place
+        
+    if fmisid:
+        params["fmisid"] = fmisid
 
     url = WFS_URL + urlencode(params)
     unparsed_gml = await fetch(url, aiohttp_kwargs)
 
     return parse_latest_observations(unparsed_gml)
+
 
 
 async def forecast(
