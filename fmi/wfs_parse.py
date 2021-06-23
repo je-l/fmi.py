@@ -134,18 +134,19 @@ def _dict_to_observation(obj: Dict[str, str]) -> Observation:
 
     return Observation(
         coordinates=Coordinates(float(obs["lat"]), float(obs["lon"])),
-        pressure=int(obs["p_sea"]) if obs.get("p_sea") else None,
-        precipitation_1h=float(obs["r_1h"]) if obs.get("r_1h") else None,
-        humidity=int(obs["rh"]),
-        snow=int(obs["snow_aws"]) if obs.get("snow_aws") else None,
-        temperature=float(obs["t2m"]),
-        dewpoint=float(obs["td"]) if obs.get("td") else None,
+        pressure=int(obs["p_sea"]) if "p_sea" in obs  else None,
+        precipitation_1h=float(obs["r_1h"]) if "r_1h" in obs else None,
+        humidity=int(obs["rh"]) if "rh" in obs else None,
+        snow=int(obs["snow_aws"]) if "snow_aws" in obs  else None,
+        temperature=float(obs["t2m"]) if "t2m" in obs else None,
+        dewpoint=float(obs["td"]) if "td" in obs else None,
         timestamp=int(obs["timestamp"]),
-        visibility=int(obs["vis"]) if obs.get("vis") else None,
-        wind_direction=int(obs["wd_10min"]) if obs.get("wd_10min") else None,
-        wind_gust=int(obs["wg_10min"]) if obs.get("wg_10min") else None,
-        wind_speed=int(obs["ws_10min"]) if obs.get("ws_10min") else None,
-        wawa=int(obs["wawa"]) if obs.get("wawa") else None,
+        visibility=int(obs["vis"]) if "vis" in obs else None,
+        wind_direction=int(obs["wd_10min"]) if "wd_10min" in obs  else None,
+        wind_gust=int(obs["wg_10min"]) if "wg_10min" in obs  else None,
+        wind_speed=int(obs["ws_10min"]) if "ws_10min" in obs  else None,
+        clouds=int(obs["n_man"]) if "n_man" in obs  else None,
+        wawa=int(obs["wawa"]) if "wawa" in obs  else None,
     )
 
 

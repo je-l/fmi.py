@@ -4,6 +4,7 @@ from pprint import pformat
 from fmi.constant import OBSERVATION_CODES, FORECAST_CODES
 
 OBSERVATION_PARAMS: Dict[str, Callable[[str], Union[float, int]]] = {
+    "n_man": float,
     "t2m": float,
     "p_sea": float,
     "rh": float,
@@ -44,6 +45,7 @@ class Observation:
         humidity: int,
         temperature: float,
         timestamp: int,
+        clouds: Optional[float] = None,
         dewpoint: Optional[float] = None,
         pressure: Optional[int] = None,
         precipitation_1h: Optional[float] = None,
@@ -56,6 +58,9 @@ class Observation:
     ) -> None:
         #: dictionary of lat/lon WGS84 coordinates for the interpreted place
         self.coordinates = coordinates
+
+        #clouds 0-8
+        self.clouds = clouds
 
         #: pressure at sea level
         self.pressure = pressure
