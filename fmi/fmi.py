@@ -68,7 +68,7 @@ async def latest_observations(
     if timestep % 10 != 0:
         raise ValueError("timestep must be divisable by 10")
 
-    if timestep != 10:
+    if timestep:
         params["timestep"] = str(timestep)
 
     if starttime:
