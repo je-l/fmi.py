@@ -18,3 +18,7 @@ jobs:
     - run: pip3 install pip-tools
     - run: pip-sync requirements/requirements.txt
     - run: make test
+    - run: make black
+    - run: make slowtest
+    - run: make pylint
+    - run: make -C doc html linkcheck
