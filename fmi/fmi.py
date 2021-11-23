@@ -46,12 +46,11 @@ async def latest_observations(
         format with second precision
     :param timestep: interval between observations in minutes. Must be
         divisible by 10
-    :param aiohttp_kwargs: keyword arguments for aiohttp request.
-        This is useful for providing timeout, proxy etc. "low level"
-        configuration for the underlying http requests. For possible values
-        see
-        `aiohttp.ClientSession.request <https://aiohttp.readthedocs.io\
-        /en/stable/client_reference.html#aiohttp.ClientSession.request>`_
+    :param aiohttp_kwargs: keyword arguments for aiohttp request. This is
+        useful for providing timeout, proxy etc. "low level" configuration for
+        the underlying http requests. For possible values see
+        `aiohttp.ClientSession.request
+        <https://docs.aiohttp.org/en/stable/client_reference.html>`_
 
     :raises ValueError: error raised if fmi api returns error, for example
         no results for given place parameter
