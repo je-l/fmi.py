@@ -6,9 +6,6 @@ test:
 slowtest:
 	pytest
 
-travis:
-	./script/travis.sh
-
 install:
 	pip install pip-tools
 	pip-sync requirements/requirements.txt
