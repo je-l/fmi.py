@@ -15,7 +15,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - run: sudo apt-get update && sudo apt-get install -y libxml2-dev libxslt1-dev
     - run: pip3 install pip-tools
     - run: pip-sync requirements/requirements.txt
     - run: make test
