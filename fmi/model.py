@@ -59,7 +59,7 @@ class Observation:
         #: dictionary of lat/lon WGS84 coordinates for the interpreted place
         self.coordinates = coordinates
 
-        #clouds 0-8
+        # clouds 0-8
         self.clouds = clouds
 
         #: pressure at sea level
@@ -109,8 +109,7 @@ class Observation:
 
 
 class Forecast:
-    """Data class for representing forecast API responses
-    """
+    """Data class for representing forecast API responses"""
 
     def __init__(
         self,

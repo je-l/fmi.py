@@ -29,11 +29,11 @@ async def fetch(url: str, aiohttp_kwargs: Dict[str, Any]) -> bytes:
 
 async def latest_observations(
     place: Optional[str] = None,
-    fmisid: Optional[int] = None, 
+    fmisid: Optional[int] = None,
     starttime: Optional[str] = None,
     endtime: Optional[str] = None,
     timestep: int = 10,
-    aiohttp_kwargs: Any = None
+    aiohttp_kwargs: Any = None,
 ) -> List[Observation]:
     """Fetch most recent weather observations for a specific place. Default
     is last 12 hours in 10 minute intervals.
@@ -73,13 +73,13 @@ async def latest_observations(
 
     if starttime:
         params["starttime"] = starttime
-        
+
     if endtime:
         params["endtime"] = endtime
-        
+
     if place:
         params["place"] = place
-        
+
     if fmisid:
         params["fmisid"] = fmisid
 
@@ -87,7 +87,6 @@ async def latest_observations(
     unparsed_gml = await fetch(url, aiohttp_kwargs)
 
     return parse_latest_observations(unparsed_gml)
-
 
 
 async def forecast(
