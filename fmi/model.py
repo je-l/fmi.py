@@ -42,9 +42,9 @@ class Observation:
     def __init__(
         self,
         coordinates: Coordinates,
-        humidity: int,
-        temperature: float,
         timestamp: int,
+        temperature: Optional[float] = None,
+        humidity: Optional[int] = None,
         clouds: Optional[float] = None,
         dewpoint: Optional[float] = None,
         pressure: Optional[int] = None,

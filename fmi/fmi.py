@@ -81,7 +81,7 @@ async def latest_observations(
         params["place"] = place
 
     if fmisid:
-        params["fmisid"] = fmisid
+        params["fmisid"] = str(fmisid)
 
     url = WFS_URL + urlencode(params)
     unparsed_gml = await fetch(url, aiohttp_kwargs)
