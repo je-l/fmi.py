@@ -59,7 +59,7 @@ class Observation:
         #: dictionary of lat/lon WGS84 coordinates for the interpreted place
         self.coordinates = coordinates
 
-        # clouds 0-8
+        #: clouds 0-8
         self.clouds = clouds
 
         #: pressure at sea level
