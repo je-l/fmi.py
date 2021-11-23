@@ -138,7 +138,7 @@ async def weather_now(place: str, aiohttp_kwargs: Any = None) -> Observation:
     )
 
     if not observations:
-        raise ValueError('No results found for "{}"'.format(place))
+        raise ValueError(f'No results found for "{place}"')
 
     return observations[-1]
 

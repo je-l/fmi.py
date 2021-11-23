@@ -120,7 +120,7 @@ def _parse_exception(gml: Any) -> str:
     error_code = exception_element.get("exceptionCode")
 
     text = _gml_find(gml, "ExceptionText")
-    return "[{}] {}".format(error_code, text)
+    return f"[{error_code}] {text}"
 
 
 def _extract_node_id(element: Any) -> List[str]:
