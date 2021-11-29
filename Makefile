@@ -1,5 +1,8 @@
 .PHONY: test
 
+checks: black pylint mypy test slowtest
+	make -C doc html linkcheck
+
 test:
 	pytest -m "not slow"
 

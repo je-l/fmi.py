@@ -9,5 +9,5 @@ __all__ = [
     "latest_observations",
     "forecast",
     "weather_now",
-    "sea_levels"
+    "sea_levels",
 ]
