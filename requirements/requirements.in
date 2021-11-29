@@ -13,3 +13,4 @@ lxml
 aiohttp
 python-dateutil
 mypy
+types-python-dateutil
